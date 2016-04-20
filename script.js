@@ -1,32 +1,58 @@
-function sendDataHighLoadBlock(idProduct, idUser, postPath){
-			//отправляю POST запрос 
-			//console.log(idProduct, idUser);			
-		    $.post(
-		    	postPath,
-		    	{'idProduct':idProduct, 'idUser':idUser},
-		    	function(data, status){
-		    		if(status == 'success'){
-		    			//$('div.wish-list a').html('Товар добавлен в список желаний');		    			
-		    			console.log('Данные успешно отправлены!');
-		    		}else{
-		    			console.log('В процессе отправки произошла ошибка');
-		    		}	
-		    	}    	
-		    );
+
+/* Данная функция создаёт кроссбраузерный объект XMLHTTP */
+function getXmlHttp() {
+    var xmlhttp;
+    try {
+      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+    try {
+      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } catch (E) {
+      xmlhttp = false;
+    }
+    }
+    if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+      xmlhttp = new XMLHttpRequest();
+    }
+    return xmlhttp;
 }
 
-function DelWishProduct(idUser, idProduct, postPath){
-	//отправляю POST запрос  на удаления товара из блока
-	//console.log(idProduct, idUser, postPath);		
-	$.post(
-		   postPath,
-		   {'idProduct':idProduct, 'idUser':idUser},
-		   function(data, status){
-		   		if(status == 'success'){		   			
-		    		console.log('Данные успешно отправлены для удаления!');
-		    	}else{
-		    		console.log('В процессе отправки произошла ошибка');
-		    	}	
-		    }    	
-	);
+function sendDataHighLoadBlock(idProduct, idUser, postPath){	
+	var xmlhttp = getXmlHttp();
+	
+	xmlhttp.open('POST', postPath, true); 
+	xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+	postUrl = 'idProduct='+ idProduct 
+			 +'&idUser=' + idUser;
+	xmlhttp.send( postUrl );
+	xmlhttp.onreadystatechange = function() { 
+      if (xmlhttp.readyState == 4) { 
+        if(xmlhttp.status == 200) {         
+        	console.log('Данные успешно отправлены!');       
+        }else{
+        	console.log('В процессе отправки произошла ошибка');
+        }
+      }
+    };
+	
+}
+
+function DelWishProduct(idProduct, idUser, postPath){
+	var xmlhttp = getXmlHttp();
+	
+	xmlhttp.open('POST', postPath, true); 
+	xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+	postUrl = 'idProduct='+ idProduct 
+			 +'&idUser=' + idUser;
+	xmlhttp.send( postUrl );
+	xmlhttp.onreadystatechange = function() { 
+      if (xmlhttp.readyState == 4) { 
+        if(xmlhttp.status == 200) {         
+        	console.log('Данные успешно отправлены для удаления!');       
+        }else{
+        	console.log('В процессе отправки произошла ошибка');
+        }
+      }
+    };
+    	
 }

@@ -56,3 +56,34 @@ function DelWishProduct(idProduct, idUser, postPath){
     };
     	
 }
+
+
+
+	
+var elCollection = document.getElementsByClassName('delElementSmallBasket');
+for(var i = 0; i < elCollection .length; i++ ){
+	elCollection[i].onclick = function(event){
+		var productBasketID = event.target.getAttribute('data-prodbasketid');			
+		var xmlhttp = getXmlHttp();
+		var postPath = '/bitrix/ajax/ajax_del_product.php';
+		
+		xmlhttp.open('POST', postPath, true); 
+		xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+		postUrl = 'productBasketID='+ productBasketID;
+				
+						
+		xmlhttp.send( postUrl );
+		xmlhttp.onreadystatechange = function() { 
+	      if (xmlhttp.readyState == 4) { 
+	        if(xmlhttp.status == 200) {         
+	        	if( xmlhttp.response == 'OK' ){
+	        		console.log('Данные успешно отправлены для удаления!');      
+	        		event.target.parentElement.parentElement.style.display="none";	
+	        	}		        	
+	        }else{
+	        	console.log('В процессе отправки произошла ошибка');
+	        }
+	      }
+	    };
+	}
+}
